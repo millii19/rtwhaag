@@ -1,7 +1,9 @@
 from flask import Flask
+from flask_cors import CORS
 from car import Car
 
 app = Flask(__name__)
+CORS(app)
 car = Car()
 
 @app.route('/')
@@ -13,10 +15,10 @@ def toggle_lights():
     car.toggle_ss()
     return f'lights are {car.lights}'
 
-@app.route('/steer/<int:amount>')
+@app.route('/steer/<int:target>')
 def steer(target):
     car.steer(target)
-    return f'steered {amount}'
+    return f'steered {target}'
 
 @app.route('/accelerate')
 def accelerate():
@@ -24,6 +26,6 @@ def accelerate():
     return 'accelerate'
 
 @app.route('/break')
-def break():
+def slow():
     car.slow()
     return 'break'
