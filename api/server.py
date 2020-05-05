@@ -8,6 +8,7 @@ car = Car()
 
 @app.route('/')
 def hello_world():
+    car.cleanup()
     return 'Hello World'
 
 @app.route('/toggle_lights')
