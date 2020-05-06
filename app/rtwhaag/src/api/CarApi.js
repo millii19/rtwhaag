@@ -8,7 +8,8 @@ class CarAPI {
     }
 
     async steer(target) {
-        const res = await get(`${this.url}/steer/${target}`)
+        const amount = target - target % 5
+        const res = await get(`${this.url}/steer/${amount}`)
         console.log(res)
     }
 

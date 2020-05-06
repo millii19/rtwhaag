@@ -13,6 +13,7 @@ max_rot = 104.4
 class Car:
     def __init__(self):
         self.lights = False
+        self.amount = 50
 
     def accelerate(self):
         print('accelerate')
@@ -23,6 +24,8 @@ class Car:
         GPIO.output(drive_channel, False)
 
     def steer(self, amount):
+        if amount is self.amount:
+            return
         target = max_rot * amount / 100
         duty = target / 18 + 2
         GPIO.output(steer_channel, True)
