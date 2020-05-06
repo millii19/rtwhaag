@@ -21,7 +21,7 @@ class Car:
         self.running = True
         self.thread = None
     
-    def start():
+    def start(self):
         self.thread = threading.Thread(target=self.steer_loop)
         self.thread.start()
 
