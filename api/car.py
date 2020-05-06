@@ -22,7 +22,7 @@ class Car:
         self.thread = None
     
     def start(self):
-        self.thread = threading.Thread(target=self.steer_loop)
+        self.thread = threading.Thread(target=self._steer_loop)
         self.thread.start()
 
     def accelerate(self):
