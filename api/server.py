@@ -6,6 +6,7 @@ from flask import request
 app = Flask(__name__)
 CORS(app)
 car = Car()
+car.start()
 
 @app.route('/')
 def hello_world():
