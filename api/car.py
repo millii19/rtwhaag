@@ -30,7 +30,7 @@ class Car:
         duty = target / 18 + 2
         GPIO.output(steer_channel, True)
         steer.ChangeDutyCycle(duty)
-        sleep(0.05)
+        sleep(0.5)
         GPIO.output(steer_channel, False)
 
         print(f'steer {amount}')
