@@ -43,7 +43,7 @@ class Car:
         local_amt = self.amount
         while self.running:
             if local_amt is self.amount:
-                sleep(0.5)
+                sleep(0.05)
                 continue
             else:
                 local_amt = self.amount
@@ -51,7 +51,7 @@ class Car:
             duty = target / 18 + 2
             GPIO.output(steer_channel, True)
             steer.ChangeDutyCycle(duty)
-            sleep(0.5)
+            sleep(0.05)
             GPIO.output(steer_channel, False)
 
     def toggle_ss(self):
