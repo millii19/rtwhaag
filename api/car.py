@@ -43,12 +43,13 @@ class Car:
         local_amt = self.amount
         while self.running:
             if local_amt is self.amount:
-                sleep(0.05)
+                sleep(0.5)
                 continue
             else:
                 local_amt = self.amount
             target = max_rot * self.amount / 100
             duty = target / 18 + 2
+            print(f'{target}   {duty}')
             GPIO.output(steer_channel, True)
             steer.ChangeDutyCycle(duty)
             sleep(0.05)

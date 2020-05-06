@@ -2,7 +2,7 @@ import CarAPI from './CarApi'
 
 const config = {
     protocol: 'http',
-    host: '192.168.43.23',
+    host: '192.168.1.114',
     port: 5000
 }
 
