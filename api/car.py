@@ -36,6 +36,8 @@ class Car:
         self.lights = not self.lights
         print(f'lights are {self.lights}')
 
-    def __del__(self):
+    def cleanup(self):
+        GPIO.output(drive_channel, False)
         GPIO.cleanup(drive_channel)
+        GPIO.output(steer_channel, False)
         GPIO.cleanup(steer_channel)

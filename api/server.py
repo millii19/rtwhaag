@@ -1,6 +1,7 @@
 from flask import Flask
 from flask_cors import CORS
 from car import Car
+from flask import request
 
 app = Flask(__name__)
 CORS(app)
@@ -30,3 +31,16 @@ def accelerate():
 def slow():
     car.slow()
     return 'break'
+
+
+def shutdown_server():
+    func = request.environ.get('werkzeug.server.shutdown')
+    if func is None:
+        raise RuntimeError('Not running with the Werkzeug Server')
+    func()
+
+@app.route('/shutdown', methods=['GET'])
+def shutdown():
+    car.cleanup()
+    shutdown_server()
+    return 'Server shutting down...'
