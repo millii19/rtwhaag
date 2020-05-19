@@ -33,6 +33,7 @@ class Car:
 
     def _speed_loop(self):
         while self.running:
+            sleep(0.5)
             console.print(f'speed: {self.speed}')
 
 
@@ -109,8 +110,9 @@ class Car:
 
     def cleanup(self):
         self.running = False
-        print('waiting for steer loop')
-        self.thread.join()
+        print('waiting for loops')
+        self.steer_thread.join()
+        self.speed_thread.join()
         print('joined')
         GPIO.output(drive_channel, False)
         GPIO.cleanup(drive_channel)
