@@ -34,7 +34,7 @@ class Car:
     def _speed_loop(self):
         while self.running:
             sleep(0.5)
-            console.print(f'speed: {self.speed}')
+            print(f'speed: {self.speed}')
 
 
     def accelerate(self):
