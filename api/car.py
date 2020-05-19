@@ -37,9 +37,28 @@ class Car:
         if amount is self.amount:
             return
         self.amount = amount
-        
-
+    
     def _steer_loop(self):
+        def getDuty(target):
+            target = max_rot * self.amount / 100
+            duty = target / 18 + 2
+            return duty
+
+        while self.running:
+            sleep(2)
+            
+            GPIO.output(steer_channel, True)
+            steer.ChangeDutyCycle(getDuty(0))
+            sleep(1)
+            steer.ChangeDutyCycle(getDuty(50))
+            sleep(1)
+            steer.ChangeDutyCycle(getDuty(100))
+            sleep(1)
+            steer.ChangeDutyCycle(getDuty(50))
+            sleep(0.5)
+            GPIO.output(steer_channel, False)
+
+    def _steer_loop2(self):
         local_amt = self.amount
         while self.running:
             if local_amt is self.amount:
