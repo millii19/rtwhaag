@@ -2,6 +2,7 @@ import RPi.GPIO as GPIO
 from time import sleep
 import threading
 from random import randint
+import math
 
 
     
@@ -78,7 +79,7 @@ class Car:
         GPIO.output(steer_channel, True)
         local_amt = self.amount
         while self.running:
-            if local_amt is self.amount:
+            if math.fabs(local_amt - self.amount) <= 3:
                 sleep(0.1)
                 continue
             else:
