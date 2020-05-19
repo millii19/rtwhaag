@@ -39,11 +39,14 @@ class Car:
             return
         self.amount = amount
     
+    @staticmethod
+    def getDuty(amount):
+        target = max_rot * amount / 100
+        duty = target / 18 + 2
+        return duty
+
     def _steer_loop1(self):
-        def getDuty(amount):
-            target = max_rot * amount / 100
-            duty = target / 18 + 2
-            return duty
+        
 
         while self.running:
             sleep(2)
@@ -60,7 +63,7 @@ class Car:
             GPIO.output(steer_channel, False)
 
 
-    def _steer_loop(self):
+    def _steer_loop3(self):
         
         while self.running:
             local_amt = randint(0, 100)
@@ -71,20 +74,19 @@ class Car:
             sleep(0.1)
             GPIO.output(steer_channel, False)
 
-    def _steer_loop2(self):
+    def _steer_loop(self):
         local_amt = self.amount
         while self.running:
             if local_amt is self.amount:
-                sleep(0.5)
+                sleep(0.1)
                 continue
             else:
                 local_amt = self.amount
-            target = max_rot * self.amount / 100
-            duty = target / 18 + 2
+            duty = self.getDuty(self.amount)
             print(f'{target}   {duty}')
             GPIO.output(steer_channel, True)
             steer.ChangeDutyCycle(duty)
-            sleep(0.05)
+            sleep(0.1)
             GPIO.output(steer_channel, False)
 
     def toggle_ss(self):
@@ -98,5 +100,7 @@ class Car:
         print('joined')
         GPIO.output(drive_channel, False)
         GPIO.cleanup(drive_channel)
+        GPIO.output(steer_channel, True)
+        steer.ChangeDutyCycle(self.getDuty(50))
         GPIO.output(steer_channel, False)
         GPIO.cleanup(steer_channel)
