@@ -20,19 +20,30 @@ class Car:
     def __init__(self):
         self.lights = False
         self.amount = 50
+        self.speed = 0
         self.running = True
-        self.thread = None
+        self.steer_thread = None
+        self.speed_thread = None
     
     def start(self):
-        self.thread = threading.Thread(target=self._steer_loop)
-        self.thread.start()
+        self.steer_thread = threading.Thread(target=self._steer_loop)
+        self.steer_thread.start()
+        self.speed_thread = threading.Thread(target=self._speed_loop)
+        self.speed_thread.start()
+
+    def _speed_loop(self):
+        while self.running:
+            console.print(f'speed: {self.speed}')
+
 
     def accelerate(self):
         print('accelerate')
+        self.speed = min(100, (self.speed+0.01)*1.1)
         GPIO.output(drive_channel, True)
 
     def slow(self):
         print('break')
+        self.speed = max(0, (self.speed-0.01)*0.9)
         GPIO.output(drive_channel, False)
 
     def steer(self, amount):
@@ -44,7 +55,7 @@ class Car:
     def getDuty(amount):
         target = max_rot * amount / 100
         duty = target / 18 + 2
-        return duty
+        return round(duty, 3) 
 
     def _steer_loop1(self):
         
@@ -77,7 +88,7 @@ class Car:
 
     def _steer_loop(self):
         GPIO.output(steer_channel, True)
-        local_amt = self.amount
+        local_amt = 0
         while self.running:
             if math.fabs(local_amt - self.amount) <= 3:
                 sleep(0.1)
