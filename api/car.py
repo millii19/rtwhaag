@@ -1,6 +1,7 @@
 import RPi.GPIO as GPIO
 from time import sleep
 import threading
+from random import randint
 
 
     
@@ -38,7 +39,7 @@ class Car:
             return
         self.amount = amount
     
-    def _steer_loop(self):
+    def _steer_loop1(self):
         def getDuty(amount):
             target = max_rot * amount / 100
             duty = target / 18 + 2
@@ -49,13 +50,25 @@ class Car:
             
             GPIO.output(steer_channel, True)
             steer.ChangeDutyCycle(getDuty(0))
-            sleep(1)
+            sleep(0.1)
             steer.ChangeDutyCycle(getDuty(50))
-            sleep(1)
+            sleep(0.1)
             steer.ChangeDutyCycle(getDuty(100))
-            sleep(1)
+            sleep(0.1)
             steer.ChangeDutyCycle(getDuty(50))
             sleep(0.5)
+            GPIO.output(steer_channel, False)
+
+
+    def _steer_loop(self):
+        
+        while self.running:
+            local_amt = randint(0, 100)
+            target = max_rot * local_amt/ 100
+            duty = target / 18 + 2
+            GPIO.output(steer_channel, True)
+            steer.ChangeDutyCycle(duty)
+            sleep(0.1)
             GPIO.output(steer_channel, False)
 
     def _steer_loop2(self):
