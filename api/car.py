@@ -83,7 +83,7 @@ class Car:
             else:
                 local_amt = self.amount
             duty = self.getDuty(self.amount)
-            print(f'{target}   {duty}')
+            print(f'{self.amount}   {duty}')
             GPIO.output(steer_channel, True)
             steer.ChangeDutyCycle(duty)
             sleep(0.1)
@@ -102,5 +102,6 @@ class Car:
         GPIO.cleanup(drive_channel)
         GPIO.output(steer_channel, True)
         steer.ChangeDutyCycle(self.getDuty(50))
+        sleep(0.5)
         GPIO.output(steer_channel, False)
         GPIO.cleanup(steer_channel)
