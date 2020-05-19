@@ -122,7 +122,7 @@ class Car:
         self.steer_thread.join()
         self.speed_thread.join()
         print('joined')
-        GPIO.
+        drive.ChangeDutyCycle(0)
         GPIO.output(drive_channel, False)
         GPIO.cleanup(drive_channel)
         GPIO.output(steer_channel, True)
