@@ -38,7 +38,7 @@ class Car:
         i = 0
         while self.running:
             sleep(0.05)
-            GPIO.ChangeDutyCycle(self.speed)
+            drive.ChangeDutyCycle(round(self.speed))
             if i is 10:
                 print(f'speed: {self.speed}')
                 i = 0
