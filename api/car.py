@@ -8,10 +8,12 @@ import math
     
 
 GPIO.setmode(GPIO.BOARD)
-drive_channel = 22 # GPIO25
+drive_channel = 16 # GPIO23
 steer_channel = 12 # GPIO18
 GPIO.setup(drive_channel, GPIO.OUT)
 GPIO.setup(steer_channel, GPIO.OUT)
+drive = GPIO.PWM(drive_channel, 50)
+drive.start(0)
 steer = GPIO.PWM(steer_channel, 50)
 steer.start(0)
 max_rot = 104.4
@@ -30,22 +32,28 @@ class Car:
         self.steer_thread.start()
         self.speed_thread = threading.Thread(target=self._speed_loop)
         self.speed_thread.start()
+        GPIO.output(drive_channel, True)
 
     def _speed_loop(self):
+        i = 0
         while self.running:
-            sleep(0.5)
-            print(f'speed: {self.speed}')
+            sleep(0.05)
+            GPIO.ChangeDutyCycle(self.speed)
+            if i is 10:
+                print(f'speed: {self.speed}')
+                i = 0
 
 
     def accelerate(self):
         print('accelerate')
-        self.speed = min(100, (self.speed+0.01)*1.1)
-        GPIO.output(drive_channel, True)
+        self.speed = round(min(100, (self.speed+1)*1.1), 2)
+        #GPIO.output(drive_channel, True)
 
     def slow(self):
         print('break')
-        self.speed = max(0, (self.speed-0.01)*0.9)
-        GPIO.output(drive_channel, False)
+        self.speed = round(max(0, (self.speed-1)*0.95), 2)
+        
+        # GPIO.output(drive_channel, False)
 
     def steer(self, amount):
         if amount is self.amount:
@@ -114,6 +122,7 @@ class Car:
         self.steer_thread.join()
         self.speed_thread.join()
         print('joined')
+        GPIO.
         GPIO.output(drive_channel, False)
         GPIO.cleanup(drive_channel)
         GPIO.output(steer_channel, True)
