@@ -75,6 +75,7 @@ class Car:
             GPIO.output(steer_channel, False)
 
     def _steer_loop(self):
+        GPIO.output(steer_channel, True)
         local_amt = self.amount
         while self.running:
             if local_amt is self.amount:
@@ -84,10 +85,11 @@ class Car:
                 local_amt = self.amount
             duty = self.getDuty(self.amount)
             print(f'{self.amount}   {duty}')
-            GPIO.output(steer_channel, True)
+            
             steer.ChangeDutyCycle(duty)
             sleep(0.1)
-            GPIO.output(steer_channel, False)
+        
+        GPIO.output(steer_channel, False)
 
     def toggle_ss(self):
         self.lights = not self.lights
