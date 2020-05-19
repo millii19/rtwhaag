@@ -39,8 +39,8 @@ class Car:
         self.amount = amount
     
     def _steer_loop(self):
-        def getDuty(target):
-            target = max_rot * self.amount / 100
+        def getDuty(amount):
+            target = max_rot * amount / 100
             duty = target / 18 + 2
             return duty
 
