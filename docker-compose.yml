@@ -1,0 +1,23 @@
+version: '3.7'
+
+services:
+  api:
+    container_name: api
+    build:
+      context: ./api
+      dockerfile: Dockerfile
+    ports:
+      - 80:5000
+    devices:
+      - "/dev/gpiomem"
+  web-app:
+    container_name: web-app
+    build:
+      context: ./app/rtwhaag
+      dockerfile: Dockerfile
+    volumes:
+      - './app/rtwhaag:/app'
+      - '/app/node_modules'
+    ports:
+      - 3000:80
+    stdin_open: true
