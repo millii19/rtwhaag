@@ -33,6 +33,10 @@ def slow():
     car.slow()
     return 'break'
 
+@app.route('/toggle/<int:pin>', methods=['GET'])
+def toggle(pin):
+    car.toggle(pin)
+    return f'Toggled pin {pin}'
 
 def shutdown_server():
     func = request.environ.get('werkzeug.server.shutdown')

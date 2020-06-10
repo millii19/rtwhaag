@@ -26,6 +26,7 @@ class Car:
         self.running = True
         self.steer_thread = None
         self.speed_thread = None
+        self.toggle_pins = set()
     
     def start(self):
         self.steer_thread = threading.Thread(target=self._steer_loop)
@@ -116,6 +117,16 @@ class Car:
         self.lights = not self.lights
         print(f'lights are {self.lights}')
 
+    def toggle(self, pin):
+        if pin not in self.toggle_pins:
+            self.toggle_pins.add(pin)
+            GPIO.setup(pin, GPIO.OUT)
+            GPIO.output(pin, True)
+        else:
+            self.toggle_pins.remove(pin)
+            GPIO.output(pin, False)
+            GPIO.cleanup(pin)
+
     def cleanup(self):
         self.running = False
         print('waiting for loops')
@@ -130,3 +141,7 @@ class Car:
         sleep(0.5)
         GPIO.output(steer_channel, False)
         GPIO.cleanup(steer_channel)
+
+        for p in self.toggle_pins:
+            GPIO.output(p, False)
+            GPIO.cleanup(p)
