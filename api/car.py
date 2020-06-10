@@ -40,6 +40,7 @@ class Car:
         while self.running:
             sleep(0.05)
             drive.ChangeDutyCycle(round(self.speed))
+            i += 1
             if i is 10:
                 print(f'speed: {self.speed}')
                 i = 0
