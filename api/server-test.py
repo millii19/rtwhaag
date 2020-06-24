@@ -11,7 +11,7 @@ def hello_world():
 
 @app.route('/toggle_lights')
 def toggle_lights():
-    return f'lights are {car.lights}'
+    return f'lights are toggled'
 
 @app.route('/steer/<int:target>')
 def steer(target):
