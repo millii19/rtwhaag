@@ -1,15 +1,26 @@
 import * as WebBrowser from 'expo-web-browser';
 import * as React from 'react';
-import { Image, Platform, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { ScrollView } from 'react-native-gesture-handler';
-
-import { MonoText } from '../components/StyledText';
+import { Slider, Platform, StyleSheet, Text, View } from 'react-native';
+//import Slider from '@react-native-community/slider';
 import Pedal from '../components/Pedal';
+import API from '../api';
+import SSButton from '../components/SSButton';
 
 export default function HomeScreen(props) {
   return (
     <View style={styles.container}>
-      <View style={styles.pedalContainer}>
+      <View style={styles.cockpitContainer}>
+        <SSButton/>
+        <Slider 
+            style={{width: '100%', height: 50}}
+            minimumTrackTintColor="#CFCFCF"
+            maximumTrackTintColor="#0f0f0f"
+            value={0.5}
+            step={0.03} // so the server won't lag behind the amount of requests
+            onValueChange={(val) => API.steer(Math.round(val*100))} />
+      </View>
+      
+      <View style={styles.controlContainer}>
         <Pedal style={styles.pedalImage} type='break' />
         <Pedal style={styles.pedalImage} type='gas' />
       </View>
@@ -29,28 +40,7 @@ HomeScreen.navigationOptions = {
   header: null,
 };
 
-function DevelopmentModeNotice() {
-  if (__DEV__) {
-    const learnMoreButton = (
-      <Text onPress={handleLearnMorePress} style={styles.helpLinkText}>
-        Learn more
-      </Text>
-    );
 
-    return (
-      <Text style={styles.developmentModeText}>
-        Development mode is enabled: your app will be slower but you can use useful development
-        tools. {learnMoreButton}
-      </Text>
-    );
-  } else {
-    return (
-      <Text style={styles.developmentModeText}>
-        You are not in development mode: your app will run at full speed.
-      </Text>
-    );
-  }
-}
 
 
 const styles = StyleSheet.create({
@@ -69,13 +59,25 @@ const styles = StyleSheet.create({
   contentContainer: {
     paddingTop: 30,
   },
-  pedalContainer: {
+  cockpitContainer: {
+    flex: 1,
+    justifyContent: 'space-between',
+    marginTop: 10,
+    marginBottom: 70,
+    paddingLeft: 20,
+    paddingRight: 20,
+    borderWidth: 0
+  },
+  controlContainer: {
     flex: 1,
     flexDirection: 'row',
     alignItems: 'flex-end',
     justifyContent: 'flex-end',
     marginTop: 10,
-    marginBottom: 100,
+    marginBottom: 70,
+    paddingLeft: 20,
+    paddingRight: 20,
+    borderWidth: 0
   },
   pedalImage: {
     width: 100,
