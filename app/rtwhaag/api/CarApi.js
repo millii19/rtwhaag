@@ -1,7 +1,17 @@
 class CarAPI {
     constructor(config) {
         this.url = `${config.protocol}://${config.host}:${config.port}`
-        console.log(this.url)
+    }
+
+    async reachable() {
+        try {
+            const res = await fetch(`${this.url}/`)
+            const text = await res.text()
+            return true
+        } catch {
+            console.log(`server unreachable ${this.url}`)
+            return false
+        }
         
     }
 
@@ -10,7 +20,7 @@ class CarAPI {
             const res = await fetch(`${this.url}/steer/${target}`)
             console.log(await res.text())
         } catch {
-            console.log(`server unreachable ${this.url}`)
+            //console.log(`server unreachable ${this.url}`)
         }
         
     }
@@ -20,7 +30,7 @@ class CarAPI {
             const res = await fetch(`${this.url}/accelerate`)
             console.log(await res.text())
         } catch {
-            console.log(`server unreachable ${this.url}`)
+            //console.log(`server unreachable ${this.url}`)
         }
         
     }
@@ -30,7 +40,7 @@ class CarAPI {
             const res = await fetch(`${this.url}/break`)
             console.log(await res.text())
         } catch {
-            console.log(`server unreachable ${this.url}`)
+            //console.log(`server unreachable ${this.url}`)
         }
     }
 
@@ -39,7 +49,7 @@ class CarAPI {
             const res = await fetch(`${this.url}/toggle_lights`)
             console.log(await res.text())
         } catch {
-            console.log(`server unreachable ${this.url}`)
+            //console.log(`server unreachable ${this.url}`)
         }
     }
 }
