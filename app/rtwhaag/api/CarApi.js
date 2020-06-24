@@ -17,8 +17,6 @@ class CarAPI {
 
     async accelerate() {
         try {
-            
-            console.log('accelerate')
             const res = await fetch(`${this.url}/accelerate`)
             console.log(await res.text())
         } catch {
@@ -29,8 +27,16 @@ class CarAPI {
 
     async break() {
         try {
-            console.log('break')
             const res = await fetch(`${this.url}/break`)
+            console.log(await res.text())
+        } catch {
+            console.log(`server unreachable ${this.url}`)
+        }
+    }
+
+    async toggleSS() {
+        try {
+            const res = await fetch(`${this.url}/toggle_lights`)
             console.log(await res.text())
         } catch {
             console.log(`server unreachable ${this.url}`)
