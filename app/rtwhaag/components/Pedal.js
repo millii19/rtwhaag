@@ -1,6 +1,6 @@
 import * as React from 'react'
 import Api from '../api'
-import { Image } from 'react-native'
+import { Image, View } from 'react-native'
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
 class Pedal extends React.Component {
@@ -8,7 +8,7 @@ class Pedal extends React.Component {
         super()
         this.timer = null
         this.footDown = this.footDown.bind(this)
-        this.stopTimer = this.footUp.bind(this)
+        this.footUp = this.footUp.bind(this)
     }
     
     footDown() {
@@ -22,12 +22,18 @@ class Pedal extends React.Component {
     }
 
     render() {
-        return <TouchableOpacity>
+        return <View onTouchStart={this.footDown} onTouchCancel={this.footUp} onTouchEnd={this.footUp}>
             {this.props.type === 'gas'
             ? <Image style={this.props.style} source={require(`../assets/images/pedal-gas.png`)} />
             : <Image style={this.props.style} source={require(`../assets/images/pedal-break.png`)} />
             }
-        </TouchableOpacity>
+        </View>
+        /*return <TouchableOpacity onPressIn={this.footDown} onPressOut={this.footUp}>
+            {this.props.type === 'gas'
+            ? <Image style={this.props.style} source={require(`../assets/images/pedal-gas.png`)} />
+            : <Image style={this.props.style} source={require(`../assets/images/pedal-break.png`)} />
+            }
+        </TouchableOpacity>*/
     }
 
 }
