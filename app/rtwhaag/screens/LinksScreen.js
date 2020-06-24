@@ -1,53 +1,95 @@
-import { Ionicons } from '@expo/vector-icons';
-import * as WebBrowser from 'expo-web-browser';
 import * as React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import { RectButton, ScrollView } from 'react-native-gesture-handler';
+import { ScrollView, TextInput, TouchableOpacity } from 'react-native-gesture-handler';
 
-export default function LinksScreen() {
-  return (
-    <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
-      <OptionButton
-        icon="md-school"
-        label="Read the Expo documentation"
-        onPress={() => WebBrowser.openBrowserAsync('https://docs.expo.io')}
-      />
+export default class LinksScreen extends React.Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      host: '192.168.1.254',
+      port: '5000'
+    }
+    this.changeAddress = this.changeAddress.bind(this)
+    this.changePort = this.changePort.bind(this)
+    this.submit = this.submit.bind(this)
+  }
 
-      <OptionButton
-        icon="md-compass"
-        label="Read the React Navigation documentation"
-        onPress={() => WebBrowser.openBrowserAsync('https://reactnavigation.org')}
-      />
+  changeAddress(val) {
+    this.setState({
+      host: val
+    })
+  }
 
-      <OptionButton
-        icon="ios-chatboxes"
-        label="Ask a question on the forums"
-        onPress={() => WebBrowser.openBrowserAsync('https://forums.expo.io')}
-        isLastOption
-      />
-    </ScrollView>
-  );
+  changePort(val) {
+    this.setState({
+      port: val
+    })
+  }
+
+  submit() {
+    console.log({
+      host: this.state.host,
+      port: this.state.port
+    })
+    const { navigate } = this.props.navigation
+    navigate('Home', {
+      host: this.state.host,
+      port: this.state.port
+    })
+  }
+
+  render() {
+     
+    return (
+      <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
+        <Option label='Host' onChange={this.changeAddress} value={this.state.host} />
+        <Option label='Port' onChange={this.changePort} value={this.state.port} />
+        <TouchableOpacity 
+          style={styles.option}
+          onPress={this.submit} >
+          <Text>Speichern</Text>
+        </TouchableOpacity>
+      </ScrollView>
+    );
+  }
 }
 
-function OptionButton({ icon, label, onPress, isLastOption }) {
+function Option(props) {
   return (
-    <RectButton style={[styles.option, isLastOption && styles.lastOption]} onPress={onPress}>
-      <View style={{ flexDirection: 'row' }}>
-        <View style={styles.optionIconContainer}>
-          <Ionicons name={icon} size={22} color="rgba(0,0,0,0.35)" />
-        </View>
-        <View style={styles.optionTextContainer}>
-          <Text style={styles.optionText}>{label}</Text>
-        </View>
-      </View>
-    </RectButton>
-  );
+    <View style={styles.optionContainer} >
+      <Text>{props.label}</Text>
+      <TextInput onChangeText={props.onChange}
+        value={props.value}
+        style={{
+          width:'80%',
+          height: 30,
+          borderWidth: 1,
+          borderRadius: 8,
+          borderColor: '#cccccc',
+          paddingLeft: 5,
+          marginLeft: 20
+        }} />
+    </View>
+  )
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fafafa',
+  },
+  optionContainer: {
+    flex: 1,
+    flexDirection: 'row',
+    alignContent: 'flex-end',
+    alignItems: 'flex-end',
+    justifyContent: 'flex-end',
+    backgroundColor: '#fdfdfd',
+    paddingHorizontal: 15,
+    paddingVertical: 15,
+    borderWidth: StyleSheet.hairlineWidth,
+    borderBottomWidth: 0,
+    borderColor: '#ededed',
   },
   contentContainer: {
     paddingTop: 15,
@@ -59,9 +101,13 @@ const styles = StyleSheet.create({
     backgroundColor: '#fdfdfd',
     paddingHorizontal: 15,
     paddingVertical: 15,
+    paddingRight: 30,
     borderWidth: StyleSheet.hairlineWidth,
     borderBottomWidth: 0,
     borderColor: '#ededed',
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'flex-end'
   },
   lastOption: {
     borderBottomWidth: StyleSheet.hairlineWidth,

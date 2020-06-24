@@ -1,40 +1,79 @@
-import * as WebBrowser from 'expo-web-browser';
 import * as React from 'react';
 import { Slider, Platform, StyleSheet, Text, View } from 'react-native';
 //import Slider from '@react-native-community/slider';
 import Pedal from '../components/Pedal';
-import API from '../api';
 import SSButton from '../components/SSButton';
+import connectAPI from '../api';
 
-export default function HomeScreen(props) {
-  return (
-    <View style={styles.container}>
-      <View style={styles.cockpitContainer}>
-        <SSButton/>
-        <Slider 
-            style={{width: '100%', height: 50}}
-            minimumTrackTintColor="#CFCFCF"
-            maximumTrackTintColor="#0f0f0f"
-            value={0.5}
-            step={0.03} // so the server won't lag behind the amount of requests
-            onValueChange={(val) => API.steer(Math.round(val*100))} />
-      </View>
-      
-      <View style={styles.controlContainer}>
-        <Pedal style={styles.pedalImage} type='break' />
-        <Pedal style={styles.pedalImage} type='gas' />
-      </View>
-      { ! props.connected 
-        ? <View style={styles.tabBarInfoContainer}>
-          <Text style={styles.tabBarInfoText}>Der RTW ist derzeit nicht verbunden</Text>
+class HomeScreen extends React.Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      connected: false
+    }
+    this.ping = this.ping.bind(this)
+    this.ping_timer = setInterval(this.ping, 1000)
+    this.steer = this.steer.bind(this)
+    console.log(this.props)
+  }
 
-          
-        </View>
-        : <View></View>
+  componentWillUnmount() {
+    clearInterval(this.ping_timer)
+  }
+
+  componentDidUpdate() {
+    clearInterval(this.ping_timer)
+    this.ping_timer = setInterval(this.ping, 1000)
+  }
+
+  async ping() {
+    try {
+      const reachable = await this.props.API.reachable()
+      if (reachable !== this.state.reachable) {
+        this.setState({
+          connected: reachable
+        })
       }
-    </View>
-  );
+    } catch {}
+  }
+
+  steer(val) {
+    this.props.API.steer(Math.round(val*100))
+  }
+
+
+  render() {
+    return (
+      <View style={styles.container}>
+        <View style={styles.cockpitContainer}>
+          <SSButton API={this.props.API} />
+          <Slider 
+              style={{width: '100%', height: 50}}
+              minimumTrackTintColor="#CFCFCF"
+              maximumTrackTintColor="#0f0f0f"
+              value={0.5}
+              step={0.03} // so the server won't lag behind the amount of requests
+              onValueChange={this.steer} />
+        </View>
+        
+        <View style={styles.controlContainer}>
+          <Pedal API={this.props.API} style={styles.pedalImage} type='break' />
+          <Pedal API={this.props.API} style={styles.pedalImage} type='gas' />
+        </View>
+        { ! this.state.connected 
+          ? <View style={styles.tabBarInfoContainer}>
+            <Text style={styles.tabBarInfoText}>Der RTW ist derzeit nicht verbunden</Text>
+
+            
+          </View>
+          : <View></View>
+        }
+      </View>
+    )
+  }
 }
+
+export default connectAPI(HomeScreen)
 
 HomeScreen.navigationOptions = {
   header: null,
