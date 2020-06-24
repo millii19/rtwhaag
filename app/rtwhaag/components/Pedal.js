@@ -1,19 +1,18 @@
 import * as React from 'react'
-import Api from '../api'
 import { Image, View } from 'react-native'
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
 class Pedal extends React.Component {
-    constructor() {
-        super()
+    constructor(props) {
+        super(props)
         this.timer = null
         this.footDown = this.footDown.bind(this)
         this.footUp = this.footUp.bind(this)
     }
     
     footDown() {
-        if (this.props.type === 'gas') Api.accelerate()
-        else Api.break()
+        if (this.props.type === 'gas') this.props.API.accelerate()
+        else this.props.API.break()
         this.timer = setTimeout(this.footDown, 200)
     }
 
