@@ -1,0 +1,12 @@
+[Unit]
+Description=CarAPI
+After=network.target
+
+[Service]
+User=pi
+WorkingDirectory=/home/pi/rtwhaag/api
+ExecStart=/home/pi/rtwhaag/api/venv/bin/flask run --host=0.0.0.0
+
+
+[Install]
+WantedBy=multi-user.target
