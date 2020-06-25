@@ -14,6 +14,7 @@ class HomeScreen extends React.Component {
     this.ping = this.ping.bind(this)
     this.ping_timer = setInterval(this.ping, 1000)
     this.steer = this.steer.bind(this)
+    this.accelerate = this.accelerate.bind(this)
     console.log(this.props)
   }
 
@@ -41,6 +42,10 @@ class HomeScreen extends React.Component {
     this.props.API.steer(Math.round(val*100))
   }
 
+  accelerate(val) {
+    this.props.API.accelerate(Math.round(val*100))
+  }
+
 
   render() {
     return (
@@ -57,8 +62,19 @@ class HomeScreen extends React.Component {
         </View>
         
         <View style={styles.controlContainer}>
-          <Pedal API={this.props.API} style={styles.pedalImage} type='break' />
-          <Pedal API={this.props.API} style={styles.pedalImage} type='gas' />
+          <Pedal API={this.props.API} style={{...styles.pedalImage, flex:3}} type='break' />
+          { /* <Pedal API={this.props.API} style={styles.pedalImage} type='gas' /> */ }
+          <Slider style={{
+                width: 300, height: 50, flex:1, 
+                transform: [{rotate: '90deg'}],
+                paddingBottom: 200
+              }}
+              minimumTrackTintColor="#CFCFCF"
+              maximumTrackTintColor="#0f0f0f"
+              
+              value={0.5}
+              step={0.05} // so the server won't lag behind the amount of requests
+              onValueChange={this.accelerate} />
         </View>
         { ! this.state.connected 
           ? <View style={styles.tabBarInfoContainer}>

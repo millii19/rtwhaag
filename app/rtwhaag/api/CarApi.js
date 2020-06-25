@@ -25,9 +25,9 @@ class CarAPI {
         
     }
 
-    async accelerate() {
+    async accelerate(target) {
         try {
-            const res = await fetch(`${this.url}/accelerate`)
+            const res = await fetch(`${this.url}/accelerate/${target}`)
             console.log(await res.text())
         } catch {
             //console.log(`server unreachable ${this.url}`)

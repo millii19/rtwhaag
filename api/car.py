@@ -74,14 +74,14 @@ class Car:
                 i = 0
 
 
-    def accelerate(self):
+    def accelerate(self, target):
         print('accelerate')
-        self.speed = round(min(100, (self.speed+1)*1.1), 2)
+        self.speed = target
         #GPIO.output(drive_channel, True)
 
     def slow(self):
         print('break')
-        self.speed = round(max(0, (self.speed-1)*0.95), 2)
+        self.speed = round(max(0, (self.speed-1)*0.8), 2)
         
         # GPIO.output(drive_channel, False)
 
