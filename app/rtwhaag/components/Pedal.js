@@ -13,7 +13,7 @@ class Pedal extends React.Component {
     footDown() {
         if (this.props.type === 'gas') this.props.API.accelerate()
         else this.props.API.break()
-        this.timer = setTimeout(this.footDown, 200)
+        this.timer = setTimeout(this.footDown, 50)
     }
 
     footUp() {

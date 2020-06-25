@@ -52,7 +52,7 @@ class HomeScreen extends React.Component {
               minimumTrackTintColor="#CFCFCF"
               maximumTrackTintColor="#0f0f0f"
               value={0.5}
-              step={0.03} // so the server won't lag behind the amount of requests
+              step={0.05} // so the server won't lag behind the amount of requests
               onValueChange={this.steer} />
         </View>
         
