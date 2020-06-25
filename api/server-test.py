@@ -17,9 +17,9 @@ def toggle_lights():
 def steer(target):
     return f'steered {target}'
 
-@app.route('/accelerate')
-def accelerate():
-    return 'accelerate'
+@app.route('/accelerate/<int:target>')
+def accelerate(target):
+    return f'accelerate to {target}'
 
 @app.route('/break')
 def slow():
