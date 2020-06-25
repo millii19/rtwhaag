@@ -44,6 +44,16 @@ class CarAPI {
         }
     }
 
+    async shutdown() {
+        console.log(this.url)
+        try {
+            const res = await fetch(`${this.url}/shutdown`)
+            console.log(await res.text())
+        } catch {
+            //console.log(`server unreachable ${this.url}`)
+        }
+    }
+
     async toggleSS() {
         try {
             const res = await fetch(`${this.url}/toggle_lights`)

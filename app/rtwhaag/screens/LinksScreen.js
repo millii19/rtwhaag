@@ -1,17 +1,19 @@
 import * as React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { ScrollView, TextInput, TouchableOpacity } from 'react-native-gesture-handler';
+import CarAPI from '../api/CarApi';
 
-export default class LinksScreen extends React.Component {
+class LinksScreen extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      host: '192.168.1.254',
+      host: '192.168.50.5',
       port: '5000'
     }
     this.changeAddress = this.changeAddress.bind(this)
     this.changePort = this.changePort.bind(this)
     this.submit = this.submit.bind(this)
+    this.shutdown_server = this.shutdown_server.bind(this)
   }
 
   changeAddress(val) {
@@ -38,21 +40,47 @@ export default class LinksScreen extends React.Component {
     })
   }
 
+  shutdown_server() {
+    const API = new CarAPI({
+      protocol: 'http',
+      host: this.state.host,
+      port: this.state.port
+    })
+    API.shutdown()
+  }
+
   render() {
      
     return (
       <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
         <Option label='Host' onChange={this.changeAddress} value={this.state.host} />
         <Option label='Port' onChange={this.changePort} value={this.state.port} />
-        <TouchableOpacity 
-          style={styles.option}
-          onPress={this.submit} >
-          <Text>Speichern</Text>
-        </TouchableOpacity>
+        <View style={styles.option}>
+          <TouchableOpacity 
+            style={{
+              ...styles.option,
+              backgroundColor: '#ff5555'
+            }}
+            onPress={this.shutdown_server} >
+            <Text style={{ color: '#ffffff' }} >Ausschalten</Text>
+          </TouchableOpacity>
+          <TouchableOpacity 
+            style={{
+              ...styles.option,
+              backgroundColor: '#eeeeee'
+            }}
+            onPress={this.submit} >
+            <Text>Speichern</Text>
+          </TouchableOpacity>
+          
+        </View>
+        
       </ScrollView>
     );
   }
 }
+
+export default LinksScreen
 
 function Option(props) {
   return (
@@ -107,7 +135,7 @@ const styles = StyleSheet.create({
     borderColor: '#ededed',
     flex: 1,
     flexDirection: 'row',
-    justifyContent: 'flex-end'
+    justifyContent: 'space-between'
   },
   lastOption: {
     borderBottomWidth: StyleSheet.hairlineWidth,
