@@ -8,7 +8,7 @@ import math
     
 
 GPIO.setmode(GPIO.BOARD)
-drive_channel = 16 # GPIO23
+drive_channel = 32 # GPIO12
 steer_channel = 12 # GPIO18
 GPIO.setup(drive_channel, GPIO.OUT)
 GPIO.setup(steer_channel, GPIO.OUT)
