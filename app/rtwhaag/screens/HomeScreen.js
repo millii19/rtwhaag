@@ -62,15 +62,15 @@ class HomeScreen extends React.Component {
         </View>
         
         <View style={styles.controlContainer}>
-          <Pedal API={this.props.API} style={{...styles.pedalImage, flex:3}} type='break' />
+          <Pedal API={this.props.API} style={{...styles.pedalImage, flex:5}} type='break' />
           { /* <Pedal API={this.props.API} style={styles.pedalImage} type='gas' /> */ }
           <Slider style={{
                 width: 300, height: 50, flex:1, 
-                transform: [{rotate: '90deg'}],
+                transform: [{rotate: '270deg'}],
                 paddingBottom: 200
               }}
-              minimumTrackTintColor="#CFCFCF"
-              maximumTrackTintColor="#0f0f0f"
+              maximumTrackTintColor="#CFCFCF"
+              minimumTrackTintColor="#0f0f0f"
               
               value={0.5}
               step={0.05} // so the server won't lag behind the amount of requests
@@ -115,7 +115,7 @@ const styles = StyleSheet.create({
     paddingTop: 30,
   },
   cockpitContainer: {
-    flex: 1,
+    flex: 3,
     justifyContent: 'space-between',
     marginTop: 10,
     marginBottom: 70,
@@ -124,7 +124,7 @@ const styles = StyleSheet.create({
     borderWidth: 0
   },
   controlContainer: {
-    flex: 1,
+    flex: 2,
     flexDirection: 'row',
     alignItems: 'flex-end',
     justifyContent: 'flex-end',
