@@ -10,8 +10,19 @@ import math
 GPIO.setmode(GPIO.BOARD)
 drive_channel = 32 # GPIO12
 steer_channel = 12 # GPIO18
+led_linksvorne_channel = 22 # GPIO25
+led_rechtsvorne_channel = 24 # GPIO8
+led_linkshinten_channel = 26 # GPIO7
+led_rechtshinten_channel = 28 # GPIO1
 GPIO.setup(drive_channel, GPIO.OUT)
 GPIO.setup(steer_channel, GPIO.OUT)
+
+GPIO.setup(led_linkshinten_channel, GPIO.OUT)
+GPIO.setup(led_linksvorne_channel, GPIO.OUT)
+GPIO.setup(led_rechtshinten_channel, GPIO.OUT)
+GPIO.setup(led_rechtsvorne_channel, GPIO.OUT)
+
+
 drive = GPIO.PWM(drive_channel, 50)
 drive.start(0)
 steer = GPIO.PWM(steer_channel, 50)
@@ -26,6 +37,8 @@ class Car:
         self.running = True
         self.steer_thread = None
         self.speed_thread = None
+        self.ss_thread = None
+        self.ss = False
         self.toggle_pins = set()
     
     def start(self):
@@ -33,7 +46,22 @@ class Car:
         self.steer_thread.start()
         self.speed_thread = threading.Thread(target=self._speed_loop)
         self.speed_thread.start()
+        self.ss_thread = threading.Thread(target=self._ss_loop)
+        self.ss_thread.start()
         GPIO.output(drive_channel, True)
+
+    def _ss_loop(self):
+        while self.running:
+            if self.lights:
+                GPIO.output(led_linkshinten_channel, True)
+                GPIO.output(led_linksvorne_channel, True)
+                GPIO.output(led_rechtshinten_channel, True)
+                GPIO.output(led_rechtsvorne_channel, True)
+                sleep(0.1)
+                GPIO.output(led_linkshinten_channel, False)
+                GPIO.output(led_linksvorne_channel, False)
+                GPIO.output(led_rechtshinten_channel, False)
+                GPIO.output(led_rechtsvorne_channel, False)
 
     def _speed_loop(self):
         i = 0
@@ -129,10 +157,12 @@ class Car:
             GPIO.cleanup(pin)
 
     def cleanup(self):
+        self.lights = False
         self.running = False
         print('waiting for loops')
         self.steer_thread.join()
         self.speed_thread.join()
+        self.ss_thread.join()
         print('joined')
         drive.ChangeDutyCycle(0)
         GPIO.output(drive_channel, False)
@@ -142,6 +172,12 @@ class Car:
         sleep(0.5)
         GPIO.output(steer_channel, False)
         GPIO.cleanup(steer_channel)
+
+        
+        GPIO.cleanup(led_linkshinten_channel)
+        GPIO.cleanup(led_linksvorne_channel)
+        GPIO.cleanup(led_rechtshinten_channel)
+        GPIO.cleanup(led_rechtsvorne_channel)
 
         for p in self.toggle_pins:
             GPIO.output(p, False)
