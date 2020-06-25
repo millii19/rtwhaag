@@ -13,7 +13,7 @@ steer_channel = 12 # GPIO18
 led_linksvorne_channel = 22 # GPIO25
 led_rechtsvorne_channel = 24 # GPIO8
 led_linkshinten_channel = 26 # GPIO7
-led_rechtshinten_channel = 28 # GPIO1
+led_rechtshinten_channel = 21 # GPIO9
 GPIO.setup(drive_channel, GPIO.OUT)
 GPIO.setup(steer_channel, GPIO.OUT)
 
