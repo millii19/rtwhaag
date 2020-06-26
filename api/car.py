@@ -38,7 +38,6 @@ class Car:
         self.steer_thread = None
         self.speed_thread = None
         self.ss_thread = None
-        self.ss = False
         self.toggle_pins = set()
     
     def start(self):
