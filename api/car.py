@@ -173,6 +173,8 @@ class Car:
         if self.lights:
             self.ss_thread = threading.Thread(target=self._ss_loop)
             self.ss_thread.start()
+        else:
+            self.ss_thread.join()
         print(f'lights are {self.lights}')
 
     def toggle(self, pin):
