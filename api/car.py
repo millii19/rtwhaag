@@ -46,7 +46,7 @@ class Car:
         self.speed_thread = threading.Thread(target=self._speed_loop)
         self.speed_thread.start()
         self.ss_thread = threading.Thread(target=self._ss_loop)
-        self.ss_thread.start()
+        #self.ss_thread.start()
         GPIO.output(drive_channel, True)
     
 
@@ -170,6 +170,8 @@ class Car:
 
     def toggle_ss(self):
         self.lights = not self.lights
+        if self.lights:
+            self.ss_thread.start()
         print(f'lights are {self.lights}')
 
     def toggle(self, pin):
