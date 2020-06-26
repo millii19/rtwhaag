@@ -49,37 +49,45 @@ class Car:
         self.ss_thread = threading.Thread(target=self._ss_loop)
         self.ss_thread.start()
         GPIO.output(drive_channel, True)
-    @staticmethod
-    def _ss_rythm(pin):
-        GPIO.output(pin, True)
-        sleep(0.6)
-        GPIO.output(pin, False)
-        sleep(0.05)
-        GPIO.output(pin, True)
-        sleep(0.05)
-        GPIO.output(pin, False)
-        sleep(0.05)
-        GPIO.output(pin, True)
-        sleep(0.05)
-        GPIO.output(pin, False)
-        sleep(0.05)
-        GPIO.output(pin, True)
-        sleep(0.05)
-        GPIO.output(pin, False)
-        sleep(0.05)
+    
+
+    def _ss_rythm(self, pin):
+        while (self.lights and self.running):
+            GPIO.output(pin, True)
+            sleep(0.6)
+            GPIO.output(pin, False)
+            sleep(0.05)
+            GPIO.output(pin, True)
+            sleep(0.05)
+            GPIO.output(pin, False)
+            sleep(0.05)
+            GPIO.output(pin, True)
+            sleep(0.05)
+            GPIO.output(pin, False)
+            sleep(0.05)
+            GPIO.output(pin, True)
+            sleep(0.05)
+            GPIO.output(pin, False)
+            sleep(0.05)
 
 
     def _ss_loop(self):
-        while self.running:
-            if self.lights:
-                (threading.Thread(target=self._ss_rythm, args=(led_linksvorne_channel))).start()
-                sleep(0.1)
-                (threading.Thread(target=self._ss_rythm, args=(led_linkshinten_channel))).start()
-                sleep(0.1)
-                (threading.Thread(target=self._ss_rythm, args=(led_rechtsvorne_channel))).start()
-                sleep(0.1)
-                (threading.Thread(target=self._ss_rythm, args=(led_rechtshinten_channel))).start()
-                sleep(0.1)
+        thread_lv = threading.Thread(target=self._ss_rythm, args=(led_linksvorne_channel,))
+        thread_lh = threading.Thread(target=self._ss_rythm, args=(led_linkshinten_channel,))
+        thread_rv = threading.Thread(target=self._ss_rythm, args=(led_rechtsvorne_channel,))
+        thread_rh = threading.Thread(target=self._ss_rythm, args=(led_rechtshinten_channel,))
+        thread_lv.start()
+        sleep(0.1)
+        thread_lh.start()
+        sleep(0.1)
+        thread_rv.start()
+        sleep(0.1)
+        thread_rh.start()
+        
+        thread_lv.join()
+        thread_lh.join()
+        thread_rv.join()
+        thread_rh.join()
 
 
     def _speed_loop(self):
