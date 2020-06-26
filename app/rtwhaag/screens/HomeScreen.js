@@ -51,7 +51,7 @@ class HomeScreen extends React.Component {
     return (
       <View style={styles.container}>
         <View style={styles.cockpitContainer}>
-          <SSButton API={this.props.API} />
+          <SSButton API={this.props.API} style={{width:100, height: 100}} />
           <Slider 
               style={{width: '100%', height: 50}}
               minimumTrackTintColor="#CFCFCF"

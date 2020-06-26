@@ -62,7 +62,7 @@ class LinksScreen extends React.Component {
               backgroundColor: '#ff5555'
             }}
             onPress={this.shutdown_server} >
-            <Text style={{ color: '#ffffff' }} >Ausschalten</Text>
+            <Text style={{ color: '#ffffff' }} >Abmelden</Text>
           </TouchableOpacity>
           <TouchableOpacity 
             style={{
